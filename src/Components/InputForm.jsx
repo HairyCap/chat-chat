@@ -41,6 +41,7 @@ class InputFprm extends Component {
         <input
           type="text"
           onChange={e => this.update(e.target.value)}
+          onFocus={() => this.props.scroll()}
           value={this.state.msg.content}
           ref={this.inputRef}
         />

@@ -67,7 +67,7 @@ class App extends Component {
           })}
           <div ref={this.chatContent} />
         </div>
-        <InputForm send={this.send} />
+        <InputForm send={this.send} scroll={this.scrollToBottom} />
       </div>
     );
   }
