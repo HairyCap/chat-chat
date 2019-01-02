@@ -41,7 +41,10 @@ class InputFprm extends Component {
         <input
           type="text"
           onChange={e => this.update(e.target.value)}
-          onFocus={() => this.props.scroll()}
+          //手机键盘跳出，视图大小调整后滚动
+          onFocus={() => setTimeout(this.props.scroll, 300)}
+          //手机键盘点击输入框，滚动到底部
+          onClick={() => this.props.scroll()}
           value={this.state.msg.content}
           ref={this.inputRef}
         />
