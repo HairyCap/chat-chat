@@ -1,7 +1,7 @@
 const graphql = require("graphql");
 const R = require("ramda");
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
 
 //dummy data
 let msgs = [
@@ -10,45 +10,70 @@ let msgs = [
     content: `110 arranging described. Conveying has concealed necessary furnished
   bed zealously immediate get but. Terminated as middletons or by
   instrument. Bred do four so your felt w`,
-    user: "HairyCap"
+    userId: "1"
   },
   {
     id: "2",
     content: `111 arranging described. Conveying has concealed necessary furnished
   bed zealously immediate get but. Terminated as middletons or by
   instrument. Bred do four so your felt w`,
-    user: "HairyCap1"
+    userId: "2"
   },
   {
     id: "3",
     content: `112 arranging described. Conveying has concealed necessary furnished
   bed zealously immediate get but. Terminated as middletons or by
   instrument. Bred do four so your felt w`,
-    user: "HairyCap1"
+    userId: "2"
   },
   {
     id: "4",
     content: `113 arranging described. Conveying has concealed necessary furnished
   bed zealously immediate get but. Terminated as middletons or by
   instrument. Bred do four so your felt w`,
-    user: "HairyCap"
+    userId: "1"
   },
   {
     id: "5",
     content: `114 arranging described. Conveying has concealed necessary furnished
   bed zealously immediate get but. Terminated as middletons or by
   instrument. Bred do four so your felt w`,
-    user: "HairyCap"
+    userId: "1"
+  }
+];
+let users = [
+  {
+    id: "1",
+    name: "HairyCap"
+  },
+  {
+    id: "2",
+    name: "HairyCap2"
   }
 ];
 
 const MsgType = new GraphQLObjectType({
   name: "Msg",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     content: { type: GraphQLString },
     // fromUser:{type: GraphQLString},
-    user: { type: GraphQLString }
+    userId: { type: GraphQLID },
+    user: {
+      type: UserType,
+      resolve(parent, args) {
+        console.log(parent);
+        return R.find(R.propEq("id", parent.userId))(users);
+      }
+    }
+  })
+});
+
+const UserType = new GraphQLObjectType({
+  name: "User",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString }
   })
 });
 
@@ -57,10 +82,17 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     msg: {
       type: MsgType,
-      args: { id: { type: GraphQLString } },
+      args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         //code to get data from db
         return R.find(R.propEq("id", args.id))(msgs);
+      }
+    },
+    user: {
+      type: UserType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return R.find(R.propEq("id", args.id))(users);
       }
     }
   }
