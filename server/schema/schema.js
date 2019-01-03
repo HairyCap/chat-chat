@@ -1,7 +1,13 @@
 const graphql = require("graphql");
 const R = require("ramda");
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLList
+} = graphql;
 
 //dummy data
 let msgs = [
@@ -62,7 +68,6 @@ const MsgType = new GraphQLObjectType({
     user: {
       type: UserType,
       resolve(parent, args) {
-        console.log(parent);
         return R.find(R.propEq("id", parent.userId))(users);
       }
     }
@@ -73,7 +78,13 @@ const UserType = new GraphQLObjectType({
   name: "User",
   fields: () => ({
     id: { type: GraphQLID },
-    name: { type: GraphQLString }
+    name: { type: GraphQLString },
+    msgs: {
+      type: new GraphQLList(MsgType),
+      resolve(parent, args) {
+        return R.filter(R.propEq("userId", parent.id))(msgs);
+      }
+    }
   })
 });
 
