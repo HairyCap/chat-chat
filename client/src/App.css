@@ -49,17 +49,17 @@
 }
 
 p.text-you {
-  border-radius: 0px 15px 15px 15px;
+  border-radius: 2px 15px 15px 15px;
 }
 
 p.text-me {
-  border-radius: 15px 0px 15px 15px;
+  border-radius: 15px 2px 15px 15px;
 }
 
 p {
   word-wrap: break-word;
   border: 1px solid #f3d6e2;
-  padding: 5px;
+  padding: 5px 5px 5px 10px;
   margin: 5px;
 }
 
@@ -72,6 +72,8 @@ input {
   width: 85%;
   border: none;
   outline: none;
+  padding: 5px;
+  font-size: 1em;
   background-color: #f3d6e2;
   margin: 3px 2px 3px 3px;
   border-radius: 9px;

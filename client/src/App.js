@@ -1,8 +1,13 @@
 import React, { Component } from "react";
-import InputForm from "./Components/InputForm";
 import "./App.css";
-import "./Components/Message";
+import InputForm from "./Components/InputForm";
 import Message from "./Components/Message";
+import ApolloCliten from "apollo-boost";
+import { ApolloProvider } from "react-apollo";
+
+const client = new ApolloCliten({
+  uri: "http://localhost:4000/graphql"
+});
 
 class App extends Component {
   constructor(props) {
@@ -45,7 +50,7 @@ class App extends Component {
           user: "HairyCap"
         }
       ],
-      me: "HairyCap"
+      me: "HairyCap1"
     };
     this.chatContent = React.createRef();
   }
@@ -58,26 +63,28 @@ class App extends Component {
     this.scrollToBottom();
   }
 
-  render() {
-    return (
-      <div className="App">
-        <div className="chatContent">
-          {this.state.msgs.map(m => {
-            return <Message msg={m} me={this.state.me} key={m.id} />;
-          })}
-          <div ref={this.chatContent} />
-        </div>
-        <InputForm send={this.send} scroll={this.scrollToBottom} />
-      </div>
-    );
-  }
-
   send = msg => {
     msg.id = this.state.msgs.length + 1;
     const state = { ...this.state };
     state.msgs.push(msg);
     this.setState(state);
   };
+
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <div className="App">
+          <div className="chatContent">
+            {this.state.msgs.map(m => {
+              return <Message msg={m} me={this.state.me} key={m.id} />;
+            })}
+            <div ref={this.chatContent} />
+          </div>
+          <InputForm send={this.send} scroll={this.scrollToBottom} />
+        </div>
+      </ApolloProvider>
+    );
+  }
 }
 
 export default App;
