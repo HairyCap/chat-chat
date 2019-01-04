@@ -20,37 +20,9 @@ class App extends Component {
         bed zealously immediate get but. Terminated as middletons or by
         instrument. Bred do four so your felt w`,
           user: "HairyCap"
-        },
-        {
-          id: 2,
-          content: `111 arranging described. Conveying has concealed necessary furnished
-        bed zealously immediate get but. Terminated as middletons or by
-        instrument. Bred do four so your felt w`,
-          user: "HairyCap1"
-        },
-        {
-          id: 3,
-          content: `112 arranging described. Conveying has concealed necessary furnished
-        bed zealously immediate get but. Terminated as middletons or by
-        instrument. Bred do four so your felt w`,
-          user: "HairyCap1"
-        },
-        {
-          id: 4,
-          content: `113 arranging described. Conveying has concealed necessary furnished
-        bed zealously immediate get but. Terminated as middletons or by
-        instrument. Bred do four so your felt w`,
-          user: "HairyCap"
-        },
-        {
-          id: 5,
-          content: `114 arranging described. Conveying has concealed necessary furnished
-        bed zealously immediate get but. Terminated as middletons or by
-        instrument. Bred do four so your felt w`,
-          user: "HairyCap"
         }
       ],
-      me: "HairyCap1"
+      me: "5c2f843debc59d32d4497086"
     };
     this.chatContent = React.createRef();
   }
@@ -71,13 +43,12 @@ class App extends Component {
   };
 
   render() {
+    // console.log(this.props);
     return (
       <ApolloProvider client={client}>
         <div className="App">
           <div className="chatContent">
-            {this.state.msgs.map(m => {
-              return <Message msg={m} me={this.state.me} key={m.id} />;
-            })}
+            <Message me={this.state.me} />
             <div ref={this.chatContent} />
           </div>
           <InputForm send={this.send} scroll={this.scrollToBottom} />

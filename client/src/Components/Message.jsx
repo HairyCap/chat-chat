@@ -1,4 +1,16 @@
 import React, { Component } from "react";
+import { gql } from "apollo-boost";
+import { graphql } from "react-apollo";
+
+const getMsgsQuery = gql`
+  {
+    msgs {
+      content
+      userId
+      id
+    }
+  }
+`;
 
 function MyMsg(props) {
   return (
@@ -20,12 +32,18 @@ function YourMsg(props) {
 
 class Message extends Component {
   render() {
-    return this.props.msg.user === this.props.me ? (
-      <MyMsg {...this.props} />
-    ) : (
-      <YourMsg {...this.props} />
-    );
+    // console.log(this.props);
+    const data = this.props.data;
+    return data.loading
+      ? "loading..."
+      : data.msgs.map(m => {
+          return m.userId === this.props.me ? (
+            <MyMsg msg={m} key={m.id} />
+          ) : (
+            <YourMsg msg={m} key={m.id} />
+          );
+        });
   }
 }
 
-export default Message;
+export default graphql(getMsgsQuery)(Message);
