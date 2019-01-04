@@ -1,14 +1,15 @@
 const graphql = require("graphql");
 const R = require("ramda");
 const User = require("../models/user");
-const Msg = require("../models/user");
+const Msg = require("../models/Msg");
 
 const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLSchema,
   GraphQLID,
-  GraphQLList
+  GraphQLList,
+  GraphQLNonNull
 } = graphql;
 
 const MsgType = new GraphQLObjectType({
@@ -22,6 +23,7 @@ const MsgType = new GraphQLObjectType({
       type: UserType,
       resolve(parent, args) {
         // return R.find(R.propEq("id", parent.userId))(users);
+        return User.findById(parent.userId);
       }
     }
   })
@@ -36,6 +38,7 @@ const UserType = new GraphQLObjectType({
       type: new GraphQLList(MsgType),
       resolve(parent, args) {
         // return R.filter(R.propEq("userId", parent.id))(msgs);
+        return Msg.find({ userId: parent.id });
       }
     }
   })
@@ -50,6 +53,7 @@ const RootQuery = new GraphQLObjectType({
       resolve(parent, args) {
         //code to get data from db
         // return R.find(R.propEq("id", args.id))(msgs);
+        return Msg.findById(args.id);
       }
     },
     user: {
@@ -57,25 +61,59 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // return R.find(R.propEq("id", args.id))(users);
+        return User.findById(args.id);
       }
     },
     msgs: {
       type: new GraphQLList(MsgType),
       resolve(parent, args) {
         // return msgs;
+        return Msg.find({}); //find all
       }
     },
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
         // return users;
+        return User.find({});
       }
     }
   }
 });
 
-
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        const user = new User({
+          name: args.name
+        });
+        return user.save();
+      }
+    },
+    addMsg: {
+      type: MsgType,
+      args: {
+        userId: { type: new GraphQLNonNull(GraphQLString) },
+        content: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      resolve(parent, args) {
+        const msg = new Msg({
+          userId: args.userId,
+          content: args.content
+        });
+        return msg.save();
+      }
+    }
+  }
+});
 
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
