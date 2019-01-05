@@ -1,7 +1,7 @@
 const graphql = require("graphql");
 const R = require("ramda");
 const User = require("../models/user");
-const Msg = require("../models/Msg");
+const Msg = require("../models/msg");
 
 const {
   GraphQLObjectType,
@@ -99,7 +99,7 @@ const Mutation = new GraphQLObjectType({
     addMsg: {
       type: MsgType,
       args: {
-        userId: { type: new GraphQLNonNull(GraphQLString) },
+        userId: { type: new GraphQLNonNull(GraphQLID) },
         content: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve(parent, args) {
