@@ -13,7 +13,7 @@ class InputForm extends Component {
   }
 
   componentDidUpdate() {
-    this.focusInput();
+    setTimeout(this.props.scroll, 200);
   }
   focusInput = () => {
     this.inputRef.current.focus();
