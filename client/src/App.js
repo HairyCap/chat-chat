@@ -33,7 +33,7 @@ class App extends Component {
       <ApolloProvider client={client}>
         <div className="App">
           <div className="chatContent">
-            <Message me={this.state.me} />
+            <Message me={this.state.me} scroll={this.scrollToBottom} />
             <div id="refDiv" className="refDiv" ref={this.chat} />
           </div>
           <InputForm me={this.state.me} scroll={this.scrollToBottom} />
