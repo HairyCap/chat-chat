@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    this.scrollToBottom();
+    setTimeout(this.props.scroll, 200);
   }
 
   scrollToBottom() {
