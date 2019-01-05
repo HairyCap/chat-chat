@@ -1,20 +1,17 @@
 import React, { Component } from "react";
+import { getMsgsQuery, addMsgMutation } from "../Queries/Queries";
+import { graphql, compose } from "react-apollo";
 
-class InputFprm extends Component {
+class InputForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      msg: {
-        user: "HairyCap",
-        content: ""
-      }
+      userId: this.props.me,
+      content: ""
     };
     this.inputRef = React.createRef();
   }
 
-  // componentDidMount() {
-  //   this.focusInput();
-  // }
   componentDidUpdate() {
     this.focusInput();
   }
@@ -23,14 +20,23 @@ class InputFprm extends Component {
   };
   update = value => {
     const state = { ...this.state };
-    state.msg.content = value;
+    state.content = value;
     this.setState(state);
+    console.log(this.props);
   };
 
   send = e => {
     e.preventDefault();
-    if (this.state.msg.content) {
-      this.props.send({ ...this.state.msg });
+    if (this.state.content) {
+      this.props
+        .addMsgMutation({
+          variables: {
+            userId: this.state.userId,
+            content: this.state.content
+          },
+          refetchQueries: [{ query: getMsgsQuery }]
+        })
+        .then(res => console.log(res));
       this.update("");
     }
   };
@@ -45,15 +51,18 @@ class InputFprm extends Component {
           onFocus={() => setTimeout(this.props.scroll, 200)}
           //手机键盘点击输入框，滚动到底部
           onClick={() => this.props.scroll()}
-          value={this.state.msg.content}
+          value={this.state.content}
           ref={this.inputRef}
         />
         <button onClick={this.send}>
-          <span role="img">send</span>
+          <span>send</span>
         </button>
       </form>
     );
   }
 }
 
-export default InputFprm;
+export default compose(
+  graphql(getMsgsQuery, { name: "getMsgsQuery" }),
+  graphql(addMsgMutation, { name: "addMsgMutation" })
+)(InputForm);

@@ -1,16 +1,6 @@
 import React, { Component } from "react";
-import { gql } from "apollo-boost";
+import { getMsgsQuery, addMsgMutation } from "../Queries/Queries";
 import { graphql } from "react-apollo";
-
-const getMsgsQuery = gql`
-  {
-    msgs {
-      content
-      userId
-      id
-    }
-  }
-`;
 
 function MyMsg(props) {
   return (
@@ -32,7 +22,7 @@ function YourMsg(props) {
 
 class Message extends Component {
   render() {
-    // console.log(this.props);
+    console.log(this.props);
     const data = this.props.data;
     //console.log(data);
     // NetworkStatus {

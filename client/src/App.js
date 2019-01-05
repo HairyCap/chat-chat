@@ -24,16 +24,8 @@ class App extends Component {
   }
 
   scrollToBottom() {
-    console.log(this.chat);
     this.chat.current.scrollIntoView({ behavior: "smooth" });
   }
-
-  send = msg => {
-    msg.id = this.state.msgs.length + 1;
-    const state = { ...this.state };
-    state.msgs.push(msg);
-    this.setState(state);
-  };
 
   render() {
     // console.log(this.props);
@@ -44,7 +36,7 @@ class App extends Component {
             <Message me={this.state.me} />
             <div id="refDiv" className="refDiv" ref={this.chat} />
           </div>
-          <InputForm send={this.send} scroll={this.scrollToBottom} />
+          <InputForm me={this.state.me} scroll={this.scrollToBottom} />
         </div>
       </ApolloProvider>
     );
