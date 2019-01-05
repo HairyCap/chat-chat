@@ -12,9 +12,9 @@ class InputFprm extends Component {
     this.inputRef = React.createRef();
   }
 
-  componentDidMount() {
-    this.focusInput();
-  }
+  // componentDidMount() {
+  //   this.focusInput();
+  // }
   componentDidUpdate() {
     this.focusInput();
   }

@@ -34,6 +34,16 @@ class Message extends Component {
   render() {
     // console.log(this.props);
     const data = this.props.data;
+    //console.log(data);
+    // NetworkStatus {
+    //   loading = 1,
+    //   setVariables = 2,
+    //   fetchMore = 3,
+    //   refetch = 4,
+    //   poll = 6,
+    //   ready = 7,
+    //   error = 8,
+    // }
     return data.loading
       ? "loading..."
       : data.msgs.map(m => {

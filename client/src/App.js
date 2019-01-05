@@ -12,27 +12,20 @@ const client = new ApolloCliten({
 class App extends Component {
   constructor(props) {
     super(props);
+    this.chat = React.createRef();
+    this.scrollToBottom = this.scrollToBottom.bind(this);
     this.state = {
-      msgs: [
-        {
-          id: 1,
-          content: `110 arranging described. Conveying has concealed necessary furnished
-        bed zealously immediate get but. Terminated as middletons or by
-        instrument. Bred do four so your felt w`,
-          user: "HairyCap"
-        }
-      ],
       me: "5c2f843debc59d32d4497086"
     };
-    this.chatContent = React.createRef();
   }
-
-  scrollToBottom = () => {
-    this.chatContent.current.scrollIntoView({ behavior: "smooth" });
-  };
 
   componentDidUpdate() {
     this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    console.log(this.chat);
+    this.chat.current.scrollIntoView({ behavior: "smooth" });
   }
 
   send = msg => {
@@ -49,7 +42,7 @@ class App extends Component {
         <div className="App">
           <div className="chatContent">
             <Message me={this.state.me} />
-            <div ref={this.chatContent} />
+            <div id="refDiv" className="refDiv" ref={this.chat} />
           </div>
           <InputForm send={this.send} scroll={this.scrollToBottom} />
         </div>
