@@ -5,7 +5,6 @@
 
 ## heroku 服务器配置
 
-项目分为 server, client 两个 branch
 
 ## server
 
